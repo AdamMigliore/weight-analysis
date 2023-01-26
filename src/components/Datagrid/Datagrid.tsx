@@ -1,10 +1,14 @@
 "use client";
-import React from "react";
+import { useTransition } from "react";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import Healthpoint from "@/interfaces/Healthpoint";
 import EditToolbar from "./EditToolbar";
 import DeleteDataItem from "./DeleteDataItem";
+import { doc, setDoc } from "firebase/firestore";
+import db from "@/firebase";
+import { useRouter } from "next/navigation";
 
+// TODO: Fix the f******* dates
 const convertToDate = (params: GridValueGetterParams) => {
   return new Date(params.row.date);
 };
@@ -48,24 +52,33 @@ const columns: GridColDef[] = [
   },
 ];
 
+export const revalidate = 86400;
+
 interface DatagridProps {
   data: Healthpoint[];
 }
 
 export default function Datagrid(props: DatagridProps) {
   const { data } = props;
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
-  const [rows, setRows] = React.useState(data);
+  const handleEvent = async (newRow: Healthpoint, oldRow: Healthpoint) => {
+    const docToUpdate = doc(db, "healthpoints", oldRow.id);
+    await setDoc(docToUpdate, newRow);
 
-  const handleEvent = (newRow: Healthpoint, oldRow: Healthpoint) => {
-    // TODO: Update DB
-    console.log(newRow, oldRow);
+    startTransition(() => {
+      // Refresh the current route and fetch new data from the server without
+      // losing client-side browser or React state.
+      router.refresh();
+    });
+
     return newRow;
   };
 
   return (
     <DataGrid
-      rows={rows}
+      rows={data}
       columns={columns}
       pageSize={5}
       rowsPerPageOptions={[5]}
@@ -75,9 +88,6 @@ export default function Datagrid(props: DatagridProps) {
       disableSelectionOnClick
       components={{
         Toolbar: EditToolbar,
-      }}
-      componentsProps={{
-        toolbar: { setRows },
       }}
     />
   );
