@@ -25,7 +25,7 @@ function convertToHealthpoint(d: QueryDocumentSnapshot<DocumentData>) {
 
   return {
     id: d.id,
-    date: ts.toDate().toString(),
+    date: ts.toDate().toISOString().split("T")[0],
     weight: dp.weight,
     bf: dp.bf,
     calories: dp.calories,

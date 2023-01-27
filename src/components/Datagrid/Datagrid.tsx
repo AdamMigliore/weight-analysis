@@ -8,11 +8,6 @@ import { doc, setDoc } from "firebase/firestore";
 import db from "@/firebase";
 import { useRouter } from "next/navigation";
 
-// TODO: Fix the f******* dates
-const convertToDate = (params: GridValueGetterParams) => {
-  return new Date(params.row.date);
-};
-
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID" },
   {
@@ -21,7 +16,6 @@ const columns: GridColDef[] = [
     flex: 1,
     editable: true,
     type: "date",
-    valueGetter: convertToDate,
   },
   {
     field: "weight",
@@ -80,14 +74,19 @@ export default function Datagrid(props: DatagridProps) {
     <DataGrid
       rows={data}
       columns={columns}
-      pageSize={5}
-      rowsPerPageOptions={[5]}
+      pageSize={15}
+      rowsPerPageOptions={[15]}
       experimentalFeatures={{ newEditingApi: true }}
       editMode="row"
       processRowUpdate={handleEvent}
       disableSelectionOnClick
       components={{
         Toolbar: EditToolbar,
+      }}
+      initialState={{
+        sorting: {
+          sortModel: [{ field: "date", sort: "asc" }],
+        },
       }}
     />
   );

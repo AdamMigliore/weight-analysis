@@ -103,8 +103,8 @@ export default function RootLayout({
       <head />
 
       <body>
-        <Box sx={{ display: "flex" }}>
-          <AppBar position="fixed" open={open}>
+        <Box sx={{ display: "flex", height: "100%" }}>
+          <AppBar position="absolute" open={open}>
             <Toolbar>
               <IconButton
                 color="inherit"
