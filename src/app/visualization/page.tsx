@@ -12,13 +12,14 @@ import styles from "./page.module.css";
 import yAxis from "@/interfaces/yAxis";
 import Line from "@/interfaces/Line";
 import xAxis from "@/interfaces/xAxis";
-import { findMedian } from "@/utils/findMedians";
+import { findMedianOfAWeek } from "@/utils/findMedians";
 import { merge } from "@/utils/merge";
 
 export default async function Visualization() {
   const data = await getData();
   data.sort((a, b) => a.date.localeCompare(b.date));
-  const medianWeight = findMedian(data, "weight", 7, "date");
+  const timestampedData = data.map((d) => ({ ...d, date: new Date(d.date) }));
+  const medianWeight = findMedianOfAWeek(timestampedData, "weight", "date");
   const mergeMedianToData = merge(data, medianWeight, "date");
 
   const yAxes: yAxis[] = [

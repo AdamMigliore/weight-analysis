@@ -1,18 +1,24 @@
-type StringIndex = { [index: string]: any };
+import { StringIndex } from "@/interfaces/StringIndex";
+import { TimestampedData } from "@/interfaces/TimestampedData";
+import { isObjectEmpty } from "./isObjectEmpty";
+import { transformDataToWeekArray } from "./transformDataToWeekArray";
 
-export function findMedian<T>(
-  data: StringIndex[],
+export function findMedianOfAWeek(
+  data: TimestampedData[],
   key: string,
-  medianWindow: number,
   identifier: string
-): StringIndex[] {
-  // Assume data is sorted
+) {
   const medians: StringIndex[] = [];
-  for (let i = 0; i < data.length; i += medianWindow) {
-    const window = data.slice(i, i + medianWindow);
-    const median = getMedian(key, identifier, window);
+  const weekArray = transformDataToWeekArray(data);
+  for (const week of weekArray) {
+    const median = getMedian(
+      key,
+      identifier,
+      week.map((v) => ({ ...v, date: v.date.toISOString().split("T")[0] }))
+    );
     medians.push(median);
   }
+
   return medians;
 }
 
@@ -21,11 +27,13 @@ function getMedian(
   identifier: string,
   window: StringIndex[]
 ): StringIndex {
-  const midpoint = Math.floor(window.length / 2);
   const sortedWindow: StringIndex[] = window
     .map((v) => ({ [identifier]: v[identifier], [key]: v[key] }))
+    .filter((v) => !isObjectEmpty(v))
     .sort((a, b) => a[key] - b[key]);
-  if (window.length % 2 == 0) {
+
+  const midpoint = Math.floor(sortedWindow.length / 2);
+  if (sortedWindow.length % 2 == 0) {
     // Even
     return {
       [identifier]: sortedWindow[midpoint][identifier],

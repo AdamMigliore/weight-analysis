@@ -27,7 +27,7 @@ const style = {
 export default function EditToolbar() {
   const [open, setOpen] = useState(false);
   const [fields, setFields] = useState<{ [index: string]: any }>({
-    date: "2023-01-25",
+    date: new Date().toISOString().split("T")[0],
     bf: 0,
     weight: 0,
     calories: 0,
@@ -57,14 +57,8 @@ export default function EditToolbar() {
     newHealthPoints.bf = parseFloat(newHealthPoints.bf);
     newHealthPoints.weight = parseFloat(newHealthPoints.weight);
     newHealthPoints.calories = parseFloat(newHealthPoints.calories);
-    console.log(newHealthPoints);
     await addDoc(collection(db, "healthpoints"), newHealthPoints);
-    setFields({
-      date: "2023-01-25",
-      bf: 0,
-      weight: 0,
-      calories: 0,
-    });
+    resetAdd();
     closeModal();
     startTransition(() => {
       // Refresh the current route and fetch new data from the server without
@@ -78,6 +72,15 @@ export default function EditToolbar() {
       ...oldFields,
       [event.target.id]: event.target.value,
     }));
+  };
+
+  const resetAdd = () => {
+    setFields({
+      date: new Date().toISOString().split("T")[0],
+      bf: 0,
+      weight: 0,
+      calories: 0,
+    });
   };
 
   return (

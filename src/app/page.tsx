@@ -22,7 +22,6 @@ export default async function Home() {
 function convertToHealthpoint(d: QueryDocumentSnapshot<DocumentData>) {
   const dp = d.data();
   const ts = new Timestamp(dp.date.seconds, dp.date.nanoseconds);
-
   return {
     id: d.id,
     date: ts.toDate().toISOString().split("T")[0],

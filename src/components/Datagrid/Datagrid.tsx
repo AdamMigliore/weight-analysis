@@ -1,6 +1,6 @@
 "use client";
 import { useTransition } from "react";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Healthpoint from "@/interfaces/Healthpoint";
 import EditToolbar from "./EditToolbar";
 import DeleteDataItem from "./DeleteDataItem";
@@ -57,9 +57,14 @@ export default function Datagrid(props: DatagridProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  const handleEvent = async (newRow: Healthpoint, oldRow: Healthpoint) => {
+  const handleEvent = async (newRow: any, oldRow: any) => {
     const docToUpdate = doc(db, "healthpoints", oldRow.id);
-    await setDoc(docToUpdate, newRow);
+    const updatedHealthPoint = { ...newRow };
+    updatedHealthPoint.date = new Date(updatedHealthPoint.date);
+    updatedHealthPoint.bf = parseFloat(updatedHealthPoint.bf);
+    updatedHealthPoint.weight = parseFloat(updatedHealthPoint.weight);
+    updatedHealthPoint.calories = parseFloat(updatedHealthPoint.calories);
+    await setDoc(docToUpdate, updatedHealthPoint);
 
     startTransition(() => {
       // Refresh the current route and fetch new data from the server without
@@ -85,9 +90,10 @@ export default function Datagrid(props: DatagridProps) {
       }}
       initialState={{
         sorting: {
-          sortModel: [{ field: "date", sort: "asc" }],
+          sortModel: [{ field: "date", sort: "desc" }],
         },
       }}
+      autoHeight
     />
   );
 }
