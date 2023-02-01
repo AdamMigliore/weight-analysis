@@ -1,5 +1,5 @@
-import { StringIndex } from "@/interfaces/StringIndex";
-import { TimestampedData } from "@/interfaces/TimestampedData";
+import { StringIndex } from "../interfaces/StringIndex";
+import { TimestampedData } from "../interfaces/TimestampedData";
 import { isObjectEmpty } from "./isObjectEmpty";
 import { transformDataToWeekArray } from "./transformDataToWeekArray";
 

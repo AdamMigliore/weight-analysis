@@ -1,11 +1,11 @@
 "use client";
 import { useTransition } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import Healthpoint from "@/interfaces/Healthpoint";
+import Healthpoint from "../../interfaces/Healthpoint";
 import EditToolbar from "./EditToolbar";
 import DeleteDataItem from "./DeleteDataItem";
 import { doc, setDoc } from "firebase/firestore";
-import db from "@/firebase";
+import db from "../../firebase";
 import { useRouter } from "next/navigation";
 
 const columns: GridColDef[] = [

@@ -5,15 +5,15 @@ import {
   QueryDocumentSnapshot,
   Timestamp,
 } from "firebase/firestore";
-import db from "@/firebase";
-import Healthpoint from "@/interfaces/Healthpoint";
-import LineChart from "@/components/Chart/LineChart";
+import db from "../../firebase";
+import Healthpoint from "../../interfaces/Healthpoint";
+import LineChart from "../../components/Chart/LineChart";
 import styles from "./page.module.css";
-import yAxis from "@/interfaces/yAxis";
-import Line from "@/interfaces/Line";
-import xAxis from "@/interfaces/xAxis";
-import { findMedianOfAWeek } from "@/utils/findMedians";
-import { merge } from "@/utils/merge";
+import yAxis from "../../interfaces/yAxis";
+import Line from "../../interfaces/Line";
+import xAxis from "../../interfaces/xAxis";
+import { findMedianOfAWeek } from "../../utils/findMedians";
+import { merge } from "../../utils/merge";
 
 export default async function Visualization() {
   const data = await getData();

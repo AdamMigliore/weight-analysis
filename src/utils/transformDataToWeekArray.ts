@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { TimestampedData } from "@/interfaces/TimestampedData";
+import { TimestampedData } from "../interfaces/TimestampedData";
 
 export function transformDataToWeekArray(arr: TimestampedData[]) {
   const calendar = new Map<number, Map<number, TimestampedData[]>>();

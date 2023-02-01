@@ -1,6 +1,6 @@
 import * as React from "react";
 import styles from "./page.module.css";
-import Datagrid from "@/components/Datagrid/Datagrid";
+import Datagrid from "../components/Datagrid/Datagrid";
 import {
   collection,
   DocumentData,

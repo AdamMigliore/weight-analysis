@@ -1,7 +1,6 @@
 "use client";
-import { useEffect } from "react";
-import yAxis from "@/interfaces/yAxis";
-import xAxis from "@/interfaces/xAxis";
+import yAxis from "../../interfaces/yAxis";
+import xAxis from "../../interfaces/xAxis";
 import {
   LineChart as RechartsLineChart,
   Line,

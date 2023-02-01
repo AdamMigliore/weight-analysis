@@ -1,5 +1,5 @@
 "use client";
-import db from "@/firebase";
+import db from "../../firebase";
 import Button from "@mui/material/Button";
 import { deleteDoc, doc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
