@@ -8,7 +8,7 @@ import {
   QueryDocumentSnapshot,
   Timestamp,
 } from "firebase/firestore";
-import db from "@/firebase";
+import db from "../firebase";
 
 export default async function Home() {
   const data = await getData();
