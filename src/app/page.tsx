@@ -10,6 +10,8 @@ import {
 } from "firebase/firestore";
 import db from "../firebase";
 
+export const revalidate = 0;
+
 export default async function Home() {
   const data = await getData();
   return (

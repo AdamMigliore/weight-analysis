@@ -15,6 +15,8 @@ import xAxis from "../../interfaces/xAxis";
 import { findMedianOfAWeek } from "../../utils/findMedians";
 import { merge } from "../../utils/merge";
 
+export const revalidate = 0;
+
 export default async function Visualization() {
   const data = await getData();
   data.sort((a, b) => a.date.localeCompare(b.date));

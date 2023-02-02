@@ -7,7 +7,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { addDoc, collection } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 
 const style = {
   position: "absolute" as "absolute",
@@ -32,7 +32,6 @@ export default function EditToolbar() {
     weight: 0,
     calories: 0,
   });
-  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const openModal = () => setOpen(true);
@@ -58,13 +57,9 @@ export default function EditToolbar() {
     newHealthPoints.weight = parseFloat(newHealthPoints.weight);
     newHealthPoints.calories = parseFloat(newHealthPoints.calories);
     await addDoc(collection(db, "healthpoints"), newHealthPoints);
+    router.refresh();
     resetAdd();
     closeModal();
-    startTransition(() => {
-      // Refresh the current route and fetch new data from the server without
-      // losing client-side browser or React state.
-      router.refresh();
-    });
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

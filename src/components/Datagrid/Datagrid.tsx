@@ -1,5 +1,4 @@
 "use client";
-import { useTransition } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Healthpoint from "../../interfaces/Healthpoint";
 import EditToolbar from "./EditToolbar";
@@ -46,15 +45,12 @@ const columns: GridColDef[] = [
   },
 ];
 
-export const revalidate = 86400;
-
 interface DatagridProps {
   data: Healthpoint[];
 }
 
 export default function Datagrid(props: DatagridProps) {
   const { data } = props;
-  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   const handleEvent = async (newRow: any, oldRow: any) => {
@@ -66,11 +62,7 @@ export default function Datagrid(props: DatagridProps) {
     updatedHealthPoint.calories = parseFloat(updatedHealthPoint.calories);
     await setDoc(docToUpdate, updatedHealthPoint);
 
-    startTransition(() => {
-      // Refresh the current route and fetch new data from the server without
-      // losing client-side browser or React state.
-      router.refresh();
-    });
+    router.refresh();
 
     return newRow;
   };
