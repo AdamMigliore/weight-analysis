@@ -1,50 +1,28 @@
-import { StringIndex } from "../interfaces/StringIndex";
-import { TimestampedData } from "../interfaces/TimestampedData";
+import Healthpoint from "@/interfaces/Healthpoint";
 import { isObjectEmpty } from "./isObjectEmpty";
 import { transformDataToWeekArray } from "./transformDataToWeekArray";
 
-export function findMedianOfAWeek(
-  data: TimestampedData[],
-  key: string,
-  identifier: string
-) {
-  const medians: StringIndex[] = [];
+export function findMedians(data: Healthpoint[]) {
   const weekArray = transformDataToWeekArray(data);
   for (const week of weekArray) {
-    const median = getMedian(
-      key,
-      identifier,
-      week.map((v) => ({ ...v, date: v.date.toISOString().split("T")[0] }))
-    );
-    medians.push(median);
+    getMedian(week);
   }
-
-  return medians;
+  const flattened = weekArray.flat();
+  return flattened;
 }
 
-function getMedian(
-  key: string,
-  identifier: string,
-  window: StringIndex[]
-): StringIndex {
-  const sortedWindow: StringIndex[] = window
-    .map((v) => ({ [identifier]: v[identifier], [key]: v[key] }))
+function getMedian(window: Healthpoint[]) {
+  const sortedWindow: Healthpoint[] = window
     .filter((v) => !isObjectEmpty(v))
-    .sort((a, b) => a[key] - b[key]);
+    .sort((a, b) => a.date.localeCompare(b.date));
 
   const midpoint = Math.floor(sortedWindow.length / 2);
   if (sortedWindow.length % 2 == 0) {
     // Even
-    return {
-      [identifier]: sortedWindow[midpoint][identifier],
-      [`median${key}`]:
-        (sortedWindow[midpoint - 1][key] + sortedWindow[midpoint][key]) / 2,
-    };
+    sortedWindow[midpoint].medianWeight =
+      (sortedWindow[midpoint - 1].weight + sortedWindow[midpoint].weight) / 2;
   } else {
     // Odd
-    return {
-      [identifier]: sortedWindow[midpoint][identifier],
-      [`median${key}`]: sortedWindow[midpoint][key],
-    };
+    sortedWindow[midpoint].medianWeight = sortedWindow[midpoint].weight;
   }
 }

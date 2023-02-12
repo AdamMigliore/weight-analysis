@@ -1,11 +1,11 @@
+import Healthpoint from "@/interfaces/Healthpoint";
 import { DateTime } from "luxon";
-import { TimestampedData } from "../interfaces/TimestampedData";
 
-export function transformDataToWeekArray(arr: TimestampedData[]) {
-  const calendar = new Map<number, Map<number, TimestampedData[]>>();
+export function transformDataToWeekArray(arr: Healthpoint[]) {
+  const calendar = new Map<number, Map<number, Healthpoint[]>>();
 
   for (const d of arr) {
-    const dt = DateTime.fromJSDate(d.date);
+    const dt = DateTime.fromJSDate(new Date(d.date));
     const year = dt.year;
     const week = dt.weekNumber;
     const day = dt.weekday;

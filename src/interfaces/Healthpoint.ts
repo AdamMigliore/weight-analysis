@@ -5,4 +5,5 @@ export default interface Healthpoint {
   weight: number;
   bf: number;
   calories: number;
+  medianWeight?: number;
 }
